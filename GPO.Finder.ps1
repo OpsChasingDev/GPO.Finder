@@ -30,6 +30,18 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Workstation Administrator
+    if ($Report.GPO.Computer.ExtensionData.Extension.LocalUsersandGroups.Group.Name -eq 'Administrators (built-in)') {
+        $obj = [PSCustomObject]@{
+            Setting = 'Workstation Administrator'
+            GPO = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
