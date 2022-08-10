@@ -12,3 +12,11 @@ foreach ($g in $GPO) {
     }
 }
 #>
+
+$GPO = Get-GPO -All
+foreach ($g in $GPO) {
+    [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
+    if ($Report.GPO.User.ExtensionData.Name -contains "Folder Redirection") {
+        return $g.DisplayName
+    }
+}
