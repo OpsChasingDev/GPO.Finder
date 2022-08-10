@@ -25,8 +25,18 @@ param (
 $Result = @()
 $GPO = Get-GPO -All
 
+
 foreach ($g in $GPO) {
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
+    # check for IncludeDisabled or IncludeUnlinked needs to happen here so unnecessary processing doesn't take place
+    <#
+    if (!$IncludeUnlinked and no links are found) {
+        continue to the next $g
+    }
+    if (!$IncludeDisabled and the gpo is disabled) {
+        continue to the next $g
+    }
+    #>
 
     # Folder Redirection
     if ($Report.GPO.User.ExtensionData.Name -contains "Folder Redirection") {
