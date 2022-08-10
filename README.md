@@ -1,2 +1,2 @@
 # GPO.Finder
-Project to easily discovering which GPOs on a network are handling certain settings
+Project to easily discover which GPOs on a network are handling certain settings
