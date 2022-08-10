@@ -33,8 +33,10 @@ foreach ($g in $GPO) {
         $obj = [PSCustomObject]@{
             Setting = "Folder Redirection"
             GPO = $g.DisplayName
-            Enabled = $Report.GPO.LinksTo.Enabled
             Linked = $Report.GPO.LinksTo.SOMPath
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
         }
         $Result += $obj
     }
