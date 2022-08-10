@@ -16,14 +16,20 @@ $Iteration = 0
 
 foreach ($g in $GPO) {
     $Iteration += 1
-    Write-Progress -Activity "Scanning GPOs..." -Status "$([math]::Round((($Iteration / $Count) * 100), 0))%" -PercentComplete (($Iteration / $Count) * 100)
+    $PercentComplete = (($Iteration / $Count) * 100)
+    $ProgressSplat = @{
+        Activity        = "Scanning GPOs..."
+        Status          = "$([math]::Round($PercentComplete, 0))%"
+        PercentComplete = $PercentComplete
+    }
+    Write-Progress @ProgressSplat
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
     
     # skip the GPO if disabled and user has not specified to include disabled
     if (
-        $Report.GPO.LinksTo.Enabled     -ne 'true' -or
-        $Report.GPO.Computer.Enabled    -ne 'true' -or
-        $Report.GPO.User.Enabled        -ne 'true' -and
+        $Report.GPO.LinksTo.Enabled -ne 'true' -or
+        $Report.GPO.Computer.Enabled -ne 'true' -or
+        $Report.GPO.User.Enabled -ne 'true' -and
         !$IncludeDisabled
     ) { Continue }
 
