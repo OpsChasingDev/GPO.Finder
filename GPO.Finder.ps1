@@ -18,7 +18,10 @@ foreach ($g in $GPO) {
     - param for -IncludeUnlinked
 
 #>
-
+param (
+    [switch]$IncludeDisabled,
+    [switch]$IncludeUnlinked
+)
 $Result = @()
 $GPO = Get-GPO -All
 
