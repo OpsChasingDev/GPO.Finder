@@ -15,15 +15,17 @@ foreach ($g in $GPO) {
     
     # skip the GPO if disabled and user has not specified to include disabled
     if (
-        $Report.GPO.LinksTo.Enabled -ne 'true' -and
+        $Report.GPO.LinksTo.Enabled     -ne 'true' -or
+        $Report.GPO.Computer.Enabled    -ne 'true' -or
+        $Report.GPO.User.Enabled        -ne 'true' -and
         !$IncludeDisabled
-        ) { Continue }
+    ) { Continue }
 
     # Folder Redirection
     if ($Report.GPO.User.ExtensionData.Name -contains "Folder Redirection") {
         $obj = [PSCustomObject]@{
             Setting = "Folder Redirection"
-            GPO = $g.DisplayName
+            GPO     = $g.DisplayName
         }
         if ($IncludeDisabled) {
             $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
@@ -35,7 +37,7 @@ foreach ($g in $GPO) {
     if ($Report.GPO.Computer.ExtensionData.Extension.LocalUsersandGroups.Group.Name -eq 'Administrators (built-in)') {
         $obj = [PSCustomObject]@{
             Setting = 'Workstation Administrator'
-            GPO = $g.DisplayName
+            GPO     = $g.DisplayName
         }
         if ($IncludeDisabled) {
             $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
