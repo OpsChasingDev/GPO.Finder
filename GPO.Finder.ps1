@@ -6,6 +6,7 @@ foreach ($g in $GPO) {
         see if the xml path to the desired settings exists
         if (it exists) {
             create a custom obj with the GPO Name, Guid, and Settings controlling it
+            (also needs to include whether or not the gpo is linked and enabled)
             return the obj
         }
         if it doesn't exist, continue to the next item in the loop
