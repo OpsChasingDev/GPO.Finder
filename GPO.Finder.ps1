@@ -17,7 +17,16 @@ foreach ($g in $GPO) {
 $GPO = Get-GPO -All
 foreach ($g in $GPO) {
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
+    $Setting = @()
+
+    # Folder Redirection
     if ($Report.GPO.User.ExtensionData.Name -contains "Folder Redirection") {
-        Write-Output $g.DisplayName
+        $Setting += "Folder Redirection"
     }
+
+    $obj = [PSCustomObject]@{
+        GPO = $g.DisplayName
+        Setting = $Setting
+    }
+    Write-Output $obj
 }
