@@ -21,6 +21,7 @@ foreach ($g in $GPO) {
 
 $Result = @()
 $GPO = Get-GPO -All
+
 foreach ($g in $GPO) {
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
 
@@ -30,6 +31,7 @@ foreach ($g in $GPO) {
             Setting = "Folder Redirection"
             GPO = $g.DisplayName
             Enabled = $Report.GPO.LinksTo.Enabled
+            Linked = $Report.GPO.LinksTo.SOMPath
         }
         $Result += $obj
     }
