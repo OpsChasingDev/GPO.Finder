@@ -1,5 +1,4 @@
 <#
-    - include checking for computer/user based policy disabled
     - progress bar
     - add in more settings to check
 #>
