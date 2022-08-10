@@ -12,8 +12,11 @@ param (
 $Result = @()
 $GPO = Get-GPO -All
 $Count = $GPO.Count
+$Iteration = 0
 
 foreach ($g in $GPO) {
+    $Iteration += 1
+    Write-Progress -Activity "Scanning GPOs..." -Status "$([math]::Round((($Iteration / $Count) * 100), 0))%" -PercentComplete (($Iteration / $Count) * 100)
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
     
     # skip the GPO if disabled and user has not specified to include disabled
