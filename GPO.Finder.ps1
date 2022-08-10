@@ -19,12 +19,11 @@ foreach ($g in $GPO) {
 
 #>
 param (
-    [switch]$IncludeDisabled,
-    [switch]$IncludeUnlinked
+    [switch]$IncludeDisabled
 )
+
 $Result = @()
 $GPO = Get-GPO -All
-
 
 foreach ($g in $GPO) {
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
@@ -41,10 +40,8 @@ foreach ($g in $GPO) {
         if ($IncludeDisabled) {
             $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
         }
-        if ($IncludeUnlinked) {
-            $obj | Add-Member @{ 'Linked' = $Report.GPO.LinksTo.SOMPath }
-        }
         $Result += $obj
     }
 }
+
 Write-Output $Result
