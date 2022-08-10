@@ -28,9 +28,10 @@ $GPO = Get-GPO -All
 foreach ($g in $GPO) {
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
     
-    if ($Report.GPO.LinksTo.Enabled -ne 'true') {
-        Continue
-    }
+    if (
+        $Report.GPO.LinksTo.Enabled -ne 'true' -and
+        !$IncludeDisabled
+        ) { Continue }
     # Folder Redirection
     if ($Report.GPO.User.ExtensionData.Name -contains "Folder Redirection") {
         $obj = [PSCustomObject]@{
