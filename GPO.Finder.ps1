@@ -12,6 +12,11 @@ foreach ($g in $GPO) {
         if it doesn't exist, continue to the next item in the loop
     }
 }
+
+- default output should be only GPOs enabled and linked
+    - param for -IncludeDisabled
+    - param for -IncludeUnlinked
+
 #>
 
 $Result = @()
@@ -24,6 +29,7 @@ foreach ($g in $GPO) {
         $obj = [PSCustomObject]@{
             Setting = "Folder Redirection"
             GPO = $g.DisplayName
+            Enabled = $Report.GPO.LinksTo.Enabled
         }
         $Result += $obj
     }
