@@ -14,6 +14,7 @@ foreach ($g in $GPO) {
 }
 #>
 
+$Result = @()
 $GPO = Get-GPO -All
 foreach ($g in $GPO) {
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
@@ -24,6 +25,7 @@ foreach ($g in $GPO) {
             Setting = "Folder Redirection"
             GPO = $g.DisplayName
         }
-        Write-Output $obj
+        $Result += $obj
     }
 }
+Write-Output $Result
