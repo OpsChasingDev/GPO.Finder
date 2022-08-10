@@ -11,6 +11,7 @@ param (
 
 $Result = @()
 $GPO = Get-GPO -All
+$Count = $GPO.Count
 
 foreach ($g in $GPO) {
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
