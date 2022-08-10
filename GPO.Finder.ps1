@@ -9,12 +9,14 @@ param (
     [switch]$IncludeDisabled
 )
 
+# setup info
 $Result = @()
 $GPO = Get-GPO -All
 $Count = $GPO.Count
 $Iteration = 0
 
 foreach ($g in $GPO) {
+    # writing progress
     $Iteration += 1
     $PercentComplete = (($Iteration / $Count) * 100)
     $ProgressSplat = @{
@@ -23,6 +25,8 @@ foreach ($g in $GPO) {
         PercentComplete = $PercentComplete
     }
     Write-Progress @ProgressSplat
+
+    # generate XML report for the current GPO
     [xml]$Report = Get-GPOReport -Guid $g.Id.Guid -ReportType 'XML'
     
     # skip the GPO if disabled and user has not specified to include disabled
