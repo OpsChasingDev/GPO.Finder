@@ -303,6 +303,18 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Logon/Logoff Script
+    if ($Report.GPO.User.ExtensionData.Name -contains "Scripts") {
+        $obj = [PSCustomObject]@{
+            Setting = "Logon/Logoff Script"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
