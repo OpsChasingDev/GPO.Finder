@@ -153,6 +153,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Folder Options
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Folder Options" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Folder Options") {
+        $obj = [PSCustomObject]@{
+            Setting = "Folder Options"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
