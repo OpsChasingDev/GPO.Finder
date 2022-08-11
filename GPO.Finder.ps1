@@ -257,6 +257,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Start Menu
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Start Menu" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Start Menu") {
+        $obj = [PSCustomObject]@{
+            Setting = "Start Menu"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
