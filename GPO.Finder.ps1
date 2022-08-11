@@ -63,7 +63,7 @@ foreach ($g in $GPO) {
         $Result += $obj
     }
 
-    # Printer Deployments
+    # Printers
     if ($Report.GPO.Computer.ExtensionData.Name -contains "Printers" -or
         $Report.GPO.User.ExtensionData.Name -contains "Printers") {
         $obj = [PSCustomObject]@{
