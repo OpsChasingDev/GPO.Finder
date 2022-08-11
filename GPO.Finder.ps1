@@ -1,7 +1,6 @@
 <#
     - add in more settings to check
         - drive mapping
-        - printer deployment
         - software deployment
 #>
 param (
