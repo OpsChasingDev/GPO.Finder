@@ -192,6 +192,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Network Options
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Network Options" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Network Options") {
+        $obj = [PSCustomObject]@{
+            Setting = "Network Options"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
