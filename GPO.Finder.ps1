@@ -12,7 +12,7 @@ param (
 $Result = @()
 try { $GPO = Get-GPO -All -ErrorAction 'Stop' }
 catch {
-    Write-Error $Error[0].Exception.Message
+    Write-Error "You must have access to the GroupPolicy module in order to use Get-GPO and Get-GPOReport."
     break
 }
 $Count = $GPO.Count
