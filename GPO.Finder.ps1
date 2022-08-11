@@ -179,6 +179,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Local Users and Groups
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Local Users and Groups" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Local Users and Groups") {
+        $obj = [PSCustomObject]@{
+            Setting = "Local Users and Groups"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
