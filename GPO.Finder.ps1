@@ -11,7 +11,10 @@ param (
 # setup info
 $Result = @()
 try { $GPO = Get-GPO -All -ErrorAction 'Stop' }
-catch { Write-Error $Error[0].Exception.Message }
+catch {
+    Write-Error $Error[0].Exception.Message
+    break
+}
 $Count = $GPO.Count
 $Iteration = 0
 
