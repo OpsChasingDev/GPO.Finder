@@ -166,6 +166,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Internet Settings
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Internet Options" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Internet Options") {
+        $obj = [PSCustomObject]@{
+            Setting = "Internet Options"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
