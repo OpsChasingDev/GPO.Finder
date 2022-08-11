@@ -291,6 +291,18 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # WinRM Service
+    if ($Report.GPO.Computer.ExtensionData.Extension.NTServices.NTService.Name -eq 'WinRM') {
+        $obj = [PSCustomObject]@{
+            Setting = "WinRM Service"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
