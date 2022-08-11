@@ -244,6 +244,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Services
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Services" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Services") {
+        $obj = [PSCustomObject]@{
+            Setting = "Services"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
