@@ -140,6 +140,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Network Shares
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Network Shares" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Network Shares") {
+        $obj = [PSCustomObject]@{
+            Setting = "Network Shares"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
