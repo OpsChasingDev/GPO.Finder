@@ -1,8 +1,3 @@
-<#
-    - add in more settings to check
-        - drive mapping
-        - software deployment
-#>
 param (
     [switch]$IncludeDisabled
 )
