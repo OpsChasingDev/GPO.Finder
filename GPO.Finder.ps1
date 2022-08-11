@@ -231,6 +231,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Scheduled Tasks
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Scheduled Tasks" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Scheduled Tasks") {
+        $obj = [PSCustomObject]@{
+            Setting = "Scheduled Tasks"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
