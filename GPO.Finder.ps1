@@ -218,6 +218,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Regional Options
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Regional Options" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Regional Options") {
+        $obj = [PSCustomObject]@{
+            Setting = "Regional Options"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
