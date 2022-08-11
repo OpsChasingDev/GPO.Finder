@@ -63,6 +63,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Printer Deployments
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Printers" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Printers") {
+        $obj = [PSCustomObject]@{
+            Setting = "Printer Deployment"
+            GPO = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
