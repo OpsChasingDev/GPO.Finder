@@ -101,6 +101,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Folders
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Folders" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Folders") {
+        $obj = [PSCustomObject]@{
+            Setting = "Folders"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
