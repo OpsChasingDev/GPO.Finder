@@ -270,6 +270,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Drive Maps
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Drive Maps" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Drive Maps") {
+        $obj = [PSCustomObject]@{
+            Setting = "Drive Maps"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
