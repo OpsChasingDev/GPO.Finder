@@ -283,6 +283,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Software Installation
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Software Installation" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Software Installation") {
+        $obj = [PSCustomObject]@{
+            Setting = "Software Installation"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
