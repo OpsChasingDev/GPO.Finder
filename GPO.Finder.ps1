@@ -315,6 +315,18 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Startup/Shutdown Script
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Scripts") {
+        $obj = [PSCustomObject]@{
+            Setting = "Startup/Shutdown Script"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
