@@ -114,11 +114,25 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
     # Registry
     if ($Report.GPO.Computer.ExtensionData.Name -contains "Registry" -or
         $Report.GPO.User.ExtensionData.Name -contains "Registry") {
         $obj = [PSCustomObject]@{
             Setting = "Registry"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
+
+    # Shortcuts
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Shortcuts" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Shortcuts") {
+        $obj = [PSCustomObject]@{
+            Setting = "Shortcuts"
             GPO     = $g.DisplayName
         }
         if ($IncludeDisabled) {
