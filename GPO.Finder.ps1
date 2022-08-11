@@ -205,6 +205,19 @@ foreach ($g in $GPO) {
         }
         $Result += $obj
     }
+
+    # Power Options
+    if ($Report.GPO.Computer.ExtensionData.Name -contains "Power Options" -or
+        $Report.GPO.User.ExtensionData.Name -contains "Power Options") {
+        $obj = [PSCustomObject]@{
+            Setting = "Power Options"
+            GPO     = $g.DisplayName
+        }
+        if ($IncludeDisabled) {
+            $obj | Add-Member @{ 'Enabled' = $Report.GPO.LinksTo.Enabled }
+        }
+        $Result += $obj
+    }
 }
 
 Write-Output $Result
